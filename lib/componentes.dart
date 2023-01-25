@@ -1,26 +1,95 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:custom_from_widget/constants/app_constants.dart';
+import 'package:custom_from_widget/provider/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-Widget buildCategoryButton(
-        {required String labelText, void Function()? onTap}) =>
-    InkWell(
-      onTap: () {},
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Container(
-          height: 40,
-          width: double.infinity,
-          decoration: BoxDecoration(color: Colors.blue),
-          child: Center(
-            child: Text(
-              labelText,
-              style: GoogleFonts.rubik(
-                  textStyle: TextStyle(
+Future<void> _showAlertDialogToUpdateCateName(
+  BuildContext context,
+  VoidCallback update,
+) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      final controller = TextEditingController();
+
+      return AlertDialog(
+        // <-- SEE HERE
+        title: const Text(AppConstants.updateCatName),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  label: Text(
+                    AppConstants.catName,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('No'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: const Text('Yes'),
+            onPressed: () {
+              Provider.of<DataProvider>(context, listen: false)
+                  .changeCatName(controller.text);
+              update();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Widget buildCategoryButton({
+  required BuildContext context,
+  required String labelText,
+  required VoidCallback onTap,
+}) =>
+    Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Container(
+        height: 50,
+        width: double.infinity,
+        decoration: BoxDecoration(color: Colors.blue),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text(
+                  labelText,
+                  style: GoogleFonts.rubik(
+                    textStyle: TextStyle(
                       fontSize: 20,
-                      color: Colors.black54,
-                      fontWeight: FontWeight.bold)),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () =>
+                      _showAlertDialogToUpdateCateName(context, onTap),
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -37,10 +106,12 @@ Widget buildOptionalChildWidget() => InkWell(
           child: Text(
             "Optional Child Widget",
             style: GoogleFonts.rubik(
-                textStyle: TextStyle(
-                    fontSize: 15,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.bold)),
+              textStyle: TextStyle(
+                fontSize: 15,
+                color: Colors.black54,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),
@@ -92,39 +163,6 @@ Widget defaultTextFormField({
           obscureText: obscureText,
         ),
       ),
-    );
-
-Widget defaultSubChip({
-  required String title,
-}) =>
-    Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        MaterialButton(
-          onPressed: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              height: 35,
-              width: double.infinity,
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Center(
-                child: Text(
-                  title,
-                  style: GoogleFonts.rubik(
-                      textStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ),
-            ),
-          ),
-        ),
-        defaultTextFormField(labelText: "label text"),
-        defaultTextFormField(labelText: "label text"),
-        defaultTextFormField(labelText: "label text"),
-      ],
     );
 
 Widget defaultAddButton() => Row(
@@ -181,3 +219,32 @@ Widget defaultButton({
         ),
       ),
     );
+
+Widget updateParentWidgets({
+  required String title,
+  required IconData icon,
+  required void Function()? onPressed,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(
+        width: 1,
+      ),
+    ),
+    child: Row(
+      children: [
+        Icon(
+          icon,
+          color: Colors.blue,
+        ),
+        TextButton(
+          onPressed: onPressed,
+          child: Text(
+            title,
+          ),
+        ),
+      ],
+    ),
+  );
+}
