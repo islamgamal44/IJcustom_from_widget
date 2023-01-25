@@ -15,15 +15,39 @@ class _TestState extends State<SubChips> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
+          child: ListView(
+        children: [
+          Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [defaultSubChip(title: "Sub Chip")],
+              children: [
+                defaultSubChip(title: "Sub Chip "),
+                SizedBox(height: 20),
+                defaultAddButton(),
+                SizedBox(height: 20),
+                defaultSubChip(title: "Sub Chip "),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    defaultButton(
+                        buttonFunction: () {},
+                        buttonText: 'Save',
+                        buttonColor: Colors.green[800]),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    defaultButton(
+                        buttonFunction: () {},
+                        buttonText: 'Delete',
+                        buttonColor: Colors.red[800]),
+                  ],
+                )
+              ],
             ),
           ),
-        ),
-      ),
+        ],
+      )),
     );
   }
 }

@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:custom_from_widget/modules/sub%20Chips.dart';
 import 'package:flutter/material.dart';
 
 import '../data/core/componentes.dart';
@@ -47,6 +48,10 @@ class _StateOneState extends State<StateOne> {
 
           switch (_selected) {
             case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SubChips()),
+              );
               log("selected 1");
               break;
             case 1:

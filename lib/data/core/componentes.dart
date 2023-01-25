@@ -126,3 +126,58 @@ Widget defaultSubChip({
         defaultTextFormField(labelText: "label text"),
       ],
     );
+
+Widget defaultAddButton() => Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+            height: 60,
+            width: 220,
+            color: Colors.grey[300],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Add Additional Sub \nChip 1n',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.rubik(
+                    textStyle: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54,
+                )),
+              ),
+            )),
+        SizedBox(
+          width: 5,
+        ),
+        IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.add,
+              color: Colors.black54,
+              size: 45,
+            ))
+      ],
+    );
+
+Widget defaultButton({
+  Color? buttonColor,
+  required Function() buttonFunction,
+  required String buttonText,
+}) =>
+    Container(
+      width: 120,
+      height: 30,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0), color: buttonColor),
+      child: MaterialButton(
+        onPressed: buttonFunction,
+        child: Text(
+          buttonText,
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
